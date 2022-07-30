@@ -1,0 +1,22 @@
+{
+  "name": "merlyn-typescript",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "prepare": "merlyn sync"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4",
+    "vite": "latest"
+  },
+  "dependencies": {
+    "excalibur": "^0.27.0",
+    "merlyn": "0.0.0-22"
+  }
+}
