@@ -1,3 +1,7 @@
+import { FadeTransition } from "merlyn/transitions"
+
+export const transition = import.meta.env.DEV ? null : new FadeTransition()
+
 const engine = new ex.Engine({
   backgroundColor: ex.Color.fromHex("#273d58"),
   antialiasing: false,

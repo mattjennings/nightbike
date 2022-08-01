@@ -1,21 +1,15 @@
-import "excalibur"
-
 import { engine } from "$game"
 import { Ground } from "./Ground"
 import { Player } from "./Player"
 import { Background } from "./Background"
-import { choose, getBaseY, getSafeArea, pxScale } from "./util"
+import { choose, getBaseY, pxScale } from "./util"
 import { vehicles } from "./vehicles"
-import { Truck } from "./vehicles/Truck"
-import { Car } from "./vehicles/Car"
-import { MiniTruck } from "./vehicles/MiniTruck"
-import { Van } from "./vehicles/Van"
 
 export class Level extends ex.Scene {
   bg!: Background
   ground!: Ground
   player!: Player
-  speed = 500
+  speed = 550
 
   vehicleTimer = 0
 
@@ -36,16 +30,10 @@ export class Level extends ex.Scene {
     this.bg.pos.y = getBaseY() - 256
   }
 
-  onPostDraw(ctx: ex.ExcaliburGraphicsContext, _delta: number): void {
-    // engine.screen.contentArea.draw(ctx, ex.Color.Yellow)
-  }
-
   onPreUpdate(engine: ex.Engine, delta: number) {
     if (this.vehicleTimer <= 0) {
-      const vehicle = this.spawnVehicle()
-      const width = vehicle.collider.bounds.width
-      this.vehicleTimer = this.speed * 2
-      console.log(this.vehicleTimer)
+      this.spawnVehicle()
+      this.vehicleTimer = 1200
     } else {
       this.vehicleTimer -= delta
     }
@@ -56,12 +44,5 @@ export class Level extends ex.Scene {
     const instance = new vehicle()
     engine.add(instance)
     return instance
-  }
-}
-
-declare module "excalibur" {
-  export interface Scene {
-    player: Player
-    speed: number
   }
 }

@@ -21,15 +21,11 @@ const wheels = ex.SpriteSheet.fromImageSource({
 const bike = $res("sprites/player/bike.png").toSprite()
 const body = $res("sprites/player/body.png").toSprite()
 
-// head.sprites.forEach((s) => pxScaleVec(s.scale))
-// wheels.sprites.forEach((s) => pxScaleVec(s.scale))
-// pxScaleVec(bike.scale)
-// pxScaleVec(body.scale)
-
 export class Player extends ex.Actor {
   frame = 0
   animSpeed = 0.2
 
+  coyoteTime = 0
   onGround = false
 
   constructor() {
@@ -38,6 +34,7 @@ export class Player extends ex.Actor {
       collisionType: ex.CollisionType.Active,
       collider: ex.Shape.Circle(8, ex.vec(0, 1)),
       scale: pxScaleVec(),
+      z: 10,
     })
   }
 
@@ -48,36 +45,55 @@ export class Player extends ex.Actor {
 
   onCollisionStart = (evt: ex.CollisionStartEvent) => {
     if (evt.other.name === "Vehicle") {
-      // console.log("dead")
+      this.die()
     }
   }
   onPostCollision = (evt: ex.PostCollisionEvent) => {
     if (evt.side === ex.Side.Bottom) {
       this.onGround = true
+      if (this.coyoteTime > 0) {
+        this.jump()
+        this.coyoteTime = 0
+      }
+    }
+
+    if (evt.side === ex.Side.Left || evt.side === ex.Side.Right) {
+      this.die()
     }
   }
 
   onPreUpdate(engine: ex.Engine, delta: number) {
+    this.vel.x = 0
     this.pos.x = getSafeArea().left + pxScale(16)
 
     // increment animation frame
     this.frame = (this.frame + this.animSpeed) % 4
 
-    this.draw()
+    this.coyoteTime = Math.max(0, this.coyoteTime - delta)
 
     engine.input.pointers.on("down", () => {
+      this.coyoteTime = 150
+
       this.jump()
     })
 
-    // helps give some lenience if user clicks before landing
-    // engine.input.pointers.on("up", () => {
-    //   this.jump()
-    // })
-
     const yVel = this.vel.y
     if (yVel > -60 && yVel < 0 && yVel !== 0) {
-      // this.vel.y -= 10
+      this.vel.y -= 2.25 * delta
     }
+  }
+
+  onPostUpdate() {
+    this.draw()
+  }
+
+  die() {
+    this.vel = ex.vec(0, 0)
+    this.coyoteTime = 0
+    this.graphics.opacity = 0.5
+    setTimeout(() => {
+      this.graphics.opacity = 1
+    }, 500)
   }
 
   jump() {

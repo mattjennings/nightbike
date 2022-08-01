@@ -22,8 +22,8 @@ packages:
     resolution: {integrity: sha512-CQkeV+oJxUazwjlHD0/3ZD08QWKuGQkhnrKo3e6ly5pd48VUpXbb77q0xMU4+vc2CkJnDS02Eq/M9ugyX20XZA==}
     dev: false
 
-  /@babel/parser/7.18.9:
-    resolution: {integrity: sha512-9uJveS9eY9DJ0t64YbIBZICtJy8a5QrDEVdiLCG97fVLpDTpGX7t8mMSb6OWw6Lrnjqj4O8zwjELX3dhoMgiBg==}
+  /@babel/parser/7.18.10:
+    resolution: {integrity: sha512-TYk3OA0HKL6qNryUayb5UUEhM/rkOQozIBEA5ITXh5DWrSp0TlUQXMyZmnWxG/DizSWBeeQ0Zbc5z8UGaaqoeg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
     dev: false
@@ -628,7 +628,7 @@ packages:
     resolution: {integrity: sha512-Q6xjoEeIKhsZeA0zxeKUOPsRi1I+vPgYDoyrQrQJA3ROc3nb2/EgVUO7xAkjoRUM/91/apqdlFKamckmYyn6Aw==}
     hasBin: true
     dependencies:
-      '@babel/parser': 7.18.9
+      '@babel/parser': 7.18.10
       '@excaliburjs/dev-tools': 0.27.1_excalibur@0.27.0
       '@excaliburjs/plugin-aseprite': 0.27.0_excalibur@0.27.0
       '@excaliburjs/plugin-tiled': 0.27.0_excalibur@0.27.0
@@ -682,7 +682,7 @@ packages:
   /mlly/0.5.5:
     resolution: {integrity: sha512-2R4JT/SxRDPexomw4rmHYY/gWAGmL9Kkq1OR76Ua6w+P340a1aBDTWzKo2kAlxzrG82OdXs5VB9Lmcmyit0Obg==}
     dependencies:
-      pathe: 0.3.2
+      pathe: 0.3.3
       pkg-types: 0.3.3
     dev: false
 
@@ -736,8 +736,8 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /pathe/0.3.2:
-    resolution: {integrity: sha512-qhnmX0TOqlCvdWWTkoM83wh5J8fZ2yhbDEc9MlsnAEtEc+JCwxUKEwmd6pkY9hRe6JR1Uecbc14VcAKX2yFSTA==}
+  /pathe/0.3.3:
+    resolution: {integrity: sha512-x3nrPvG0HDSDzUiJ0WqtzhN4MD+h5B+dFJ3/qyxVuARlr4Y3aJv8gri2cZzp9Z8sGs2a+aG9gNbKngh3gme57A==}
     dev: false
 
   /picocolors/1.0.0:
@@ -753,7 +753,7 @@ packages:
     dependencies:
       jsonc-parser: 3.1.0
       mlly: 0.5.5
-      pathe: 0.3.2
+      pathe: 0.3.3
     dev: false
 
   /postcss/8.4.14:
@@ -930,7 +930,7 @@ packages:
       local-pkg: 0.4.2
       magic-string: 0.26.2
       mlly: 0.5.5
-      pathe: 0.3.2
+      pathe: 0.3.3
       scule: 0.2.1
       strip-literal: 0.4.0
       unplugin: 0.7.2_vite@3.0.4

@@ -1,3 +1,4 @@
+import type { Level } from "$lib/Level"
 import { getBaseY, getSafeArea, pxScale, pxScaleVec } from "$lib/util"
 
 export interface VehicleArgs extends ex.ActorArgs {
@@ -5,6 +6,7 @@ export interface VehicleArgs extends ex.ActorArgs {
 }
 
 export class Vehicle extends ex.Actor {
+  declare scene: Level
   spritesheet: ex.SpriteSheet
 
   constructor({ spritesheet, ...args }: VehicleArgs) {
@@ -39,7 +41,8 @@ export class Vehicle extends ex.Actor {
   }
 
   onPreUpdate(engine: ex.Engine, delta: number) {
-    this.vel.x = -Math.round(this.scene.speed * 0.9)
+    this.scene.isTransitioning
+    this.vel.x = -Math.round(this.scene.speed * 0.75)
 
     if (
       this.pos.x + this.width <
