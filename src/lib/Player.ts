@@ -98,7 +98,7 @@ export class Player extends ex.Actor {
 
   jump() {
     if (this.onGround) {
-      this.vel.y = -12 * 60
+      this.vel.y = -13 * 60
       this.onGround = false
     }
   }

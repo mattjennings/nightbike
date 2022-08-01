@@ -3,6 +3,7 @@ import { MiniTruck } from "./MiniTruck"
 import { Van } from "./Van"
 import { Truck } from "./Truck"
 import { Bus } from "./Bus"
-export { Vehicle } from "./Vehicle"
+import { Vehicle } from "./Vehicle"
+export { Vehicle }
 
-export const vehicles = [Car, MiniTruck, Van, Truck, Bus]
+export const vehicles: typeof Vehicle[] = [Car, MiniTruck, Van, Truck, Bus]

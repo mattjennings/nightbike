@@ -14,6 +14,6 @@ const engine = new ex.Engine({
 
 // engine.showDebug(true)
 
-ex.Physics.gravity = new ex.Vector(0, 0.9 * 60 * 60)
+ex.Physics.gravity = new ex.Vector(0, 1 * 60 * 60)
 
 export default engine
