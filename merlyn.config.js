@@ -6,7 +6,7 @@ export default ({ dev }) => ({
   scenes: {
     boot: "index",
   },
-  devtool: {
-    // enabled: true,
+  debug: {
+    // show: true,
   },
 })

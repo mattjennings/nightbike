@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   excalibur: ^0.27.0
-  merlyn: 0.0.0-28
+  merlyn: 0.0.0-29
   prettier: ^2.7.1
   typescript: ^4.7.4
   vite: latest
@@ -10,7 +10,7 @@ specifiers:
 
 dependencies:
   excalibur: 0.27.0
-  merlyn: 0.0.0-28
+  merlyn: 0.0.0-29
 
 devDependencies:
   prettier: 2.7.1
@@ -1671,8 +1671,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  /merlyn/0.0.0-28:
-    resolution: {integrity: sha512-urnlGQY2KxT2DoevqVZQwqNcQ8OmqpmjO/QriBcRhNoMyOd+LgrxEpLeAJris9F5CZwmaI3dtIKqq+9e6tjJvg==}
+  /merlyn/0.0.0-29:
+    resolution: {integrity: sha512-UK2y53ckIWSj3PZnLPZujYgi3z3KHsgx0fa5Q00CHcjgLIoq9t3ZFNXZNmS8rNXY1JF0s1e4dmxxTPLtLSkzAw==}
     hasBin: true
     dependencies:
       '@babel/parser': 7.18.10
@@ -1689,7 +1689,7 @@ packages:
       mkdirp: 1.0.4
       prettier: 2.7.1
       query-string: 7.1.1
-      recast: 0.21.1
+      recast: 0.21.2
       sade: 1.8.1
       sirv: 2.0.2
       unplugin-auto-import: 0.9.5_vite@3.0.4
@@ -1750,9 +1750,10 @@ packages:
     hasBin: true
     dev: false
 
-  /mlly/0.5.5:
-    resolution: {integrity: sha512-2R4JT/SxRDPexomw4rmHYY/gWAGmL9Kkq1OR76Ua6w+P340a1aBDTWzKo2kAlxzrG82OdXs5VB9Lmcmyit0Obg==}
+  /mlly/0.5.7:
+    resolution: {integrity: sha512-rz+n2i9862ymLH+UDlHpsuTVyCIAs+9WejS2De2VUlAKdpq8OJ9x/C2M7nNUMLEW1H+D6n0uZlpz8+tMGxCmyQ==}
     dependencies:
+      acorn: 8.8.0
       pathe: 0.3.3
       pkg-types: 0.3.3
     dev: false
@@ -2030,7 +2031,7 @@ packages:
     resolution: {integrity: sha512-6AJcCMnjUQPQv/Wk960w0TOmjhdjbeaQJoSKWRQv9N3rgkessCu6J0Ydsog/nw1MbpnxHuPzYbfOn2KmlZO1FA==}
     dependencies:
       jsonc-parser: 3.1.0
-      mlly: 0.5.5
+      mlly: 0.5.7
       pathe: 0.3.3
     dev: false
 
@@ -2133,8 +2134,8 @@ packages:
       picomatch: 2.3.1
     dev: false
 
-  /recast/0.21.1:
-    resolution: {integrity: sha512-PF61BHLaOGF5oIKTpSrDM6Qfy2d7DIx5qblgqG+wjqHuFH97OgAqBYFIJwEuHTrM6pQGT17IJ8D0C/jVu/0tig==}
+  /recast/0.21.2:
+    resolution: {integrity: sha512-jUR1+NtaBQdKDqBJ+qxwMm5zR8aLSNh268EfgAbY+EP4wcNEWb6hZFhFeYjaYanwgDahx5t47CH8db7X2NfKdQ==}
     engines: {node: '>= 4'}
     dependencies:
       ast-types: 0.15.2
@@ -2565,7 +2566,7 @@ packages:
       fast-glob: 3.2.11
       local-pkg: 0.4.2
       magic-string: 0.26.2
-      mlly: 0.5.5
+      mlly: 0.5.7
       pathe: 0.3.3
       scule: 0.2.1
       strip-literal: 0.4.0

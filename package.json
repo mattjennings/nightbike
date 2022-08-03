@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "excalibur": "^0.27.0",
-    "merlyn": "0.0.0-28"
+    "merlyn": "0.0.0-29"
   }
 }
