@@ -1,71 +1,62 @@
 import { getBaseY, pxScale, pxScaleVec } from "./util"
 import { WindowResizeComponent } from "./WindowResizeComponent"
 import type { Routes } from "$game"
+import { InfiniteScrollGraphic } from "./InfiniteScrollGraphic"
 
-export class Ground extends ex.Actor {
+const top = $res("sprites/levels/ground/street-top.png").toSprite()
+const fill = $res("sprites/levels/ground/street-fill.png").toSprite()
+export class Ground extends InfiniteScrollGraphic {
   declare scene: Routes["index"]
-  top!: ex.Sprite
-  fill!: ex.Sprite
-  offsetX = 0
 
-  constructor({ top, fill }: { top: ex.Sprite; fill: ex.Sprite }) {
+  fill: InfiniteScrollGraphic | undefined
+
+  constructor() {
     super({
+      name: "Ground",
+      graphic: top,
+      x: 0,
+      y: 0,
+      scale: pxScaleVec(),
       anchor: new ex.Vector(0, 0),
       collisionType: ex.CollisionType.Fixed,
     })
-    this.top = top
-    this.fill = fill
-    this.addComponent(new WindowResizeComponent())
   }
 
   onInitialize(engine: ex.Engine) {
     this.pos.y = getBaseY()
-    this.onWindowResize()
+    this.speed = -this.scene.speed / 3500
   }
 
   onWindowResize() {
-    const width = this.fill.width
-    const height = this.fill.height
-
+    super.onWindowResize()
     this.collider.usePolygonCollider([
-      // box shape but offset down 2 scaled pixels
-      ex.vec(0, pxScale(2)),
-      ex.vec(this.scene.camera.viewport.width, pxScale(2)),
+      ex.vec(0, 2),
+      ex.vec(this.scene.camera.viewport.width, 2),
       ex.vec(this.scene.camera.viewport.width, 100),
       ex.vec(0, 100),
     ])
 
-    const columns = Math.ceil(this.scene.camera.viewport.width / width) + 1
-    const rows = Math.ceil(this.pos.y / this.fill.height)
+    const rows = Math.ceil(this.pos.y / fill.height)
+    if (this.fill) {
+      this.fill.kill()
+    }
 
-    this.graphics.use(
-      new ex.GraphicsGroup({
-        scale: pxScaleVec(new ex.Vector(1, 1)),
-        members: [
-          ...Array.from({ length: columns }).map((_, i) => ({
-            graphic: this.top,
-            pos: new ex.Vector(width * i, 0),
-          })),
-          ...Array.from({ length: columns }).flatMap((_, x) =>
-            Array.from({ length: rows }).map((_, y) => ({
-              graphic: this.fill,
-              pos: new ex.Vector(width * x, height * y + height - 8),
-            }))
-          ),
-        ],
-      })
-    )
+    this.fill = new InfiniteScrollGraphic({
+      graphic: fill,
+      speed: this.speed,
+      scale: this.scale,
+      x: this.scene.camera.viewport.left,
+      y: this.pos.y + fill.height + fill.height,
+      repeatY: rows,
+    })
+
+    // add directly to scene
+    // normally, it would make sense for these to be children of Ground,
+    // but its pos.x does not stay in sync with viewport on resize for some reason
+    this.scene.engine.add(this.fill)
   }
 
   onPreUpdate(engine: ex.Engine, delta: number) {
     this.pos.x = this.scene.camera.viewport.left
-    this.offsetX -= (this.scene.speed / 1000) * delta
-
-    // move back X columns so that it appears infinite
-    while (this.offsetX < -pxScale(this.fill.width)) {
-      this.offsetX += pxScale(this.fill.width)
-    }
-
-    this.graphics.offset.x = this.offsetX
   }
 }

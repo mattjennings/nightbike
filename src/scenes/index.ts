@@ -1,13 +1,13 @@
 import { engine } from "$game"
 import { Ground } from "$lib/Ground"
 import { Player } from "$lib/Player"
-import { Background } from "$lib/Background"
 import { choose, getBaseY, getSafeArea, pxScale } from "$lib/util"
 import { Vehicle, vehicles } from "$lib/vehicles"
 import { Bus } from "$lib/vehicles/Bus"
 import { Truck } from "$lib/vehicles/Truck"
 import { Car } from "$lib/vehicles/Car"
 import { coroutine } from "merlyn"
+import { CityBackground } from "$lib/CityBackground"
 
 export default class Main extends ex.Scene {
   player!: Player
@@ -18,17 +18,11 @@ export default class Main extends ex.Scene {
   vehicleTimer = 0
 
   onInitialize() {
-    const bg = new Background({
-      graphic: $res("sprites/levels/bg/city.png").toSprite(),
-    })
-    const ground = new Ground({
-      top: $res("sprites/levels/ground/street-top.png").toSprite(),
-      fill: $res("sprites/levels/ground/street-fill.png").toSprite(),
-    })
+    const bg = new CityBackground()
+    const ground = new Ground()
     engine.add(bg)
     engine.add(ground)
 
-    this.music.loop = true
     this.music.play()
     this.spawnPlayer()
   }
@@ -63,7 +57,7 @@ export default class Main extends ex.Scene {
 
   onPreUpdate(engine: ex.Engine, delta: number) {
     // sometimes it doesn't actually loop, this seems to help
-    if (!this.music.isPlaying) {
+    if (!this.music.isPlaying()) {
       this.music.play()
     }
     if (!this.player.isKilled()) {
