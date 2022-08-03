@@ -94,6 +94,11 @@ export class Player extends ex.Actor {
       this.pos.x = getSafeArea().left + pxScale(16)
     }
 
+    // if window is resized, physics can get crazy and cause player to fall through floor
+    if (this.pos.y > getSafeArea().bottom) {
+      this.die()
+    }
+
     // increment animation frame
     this.frame = (this.frame + this.animSpeed) % 4
 
