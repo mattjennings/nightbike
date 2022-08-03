@@ -13,10 +13,11 @@
   "devDependencies": {
     "prettier": "^2.7.1",
     "typescript": "^4.7.4",
-    "vite": "latest"
+    "vite": "latest",
+    "vite-plugin-compress": "^2.1.1"
   },
   "dependencies": {
     "excalibur": "^0.27.0",
-    "merlyn": "0.0.0-26"
+    "merlyn": "0.0.0-28"
   }
 }
