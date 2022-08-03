@@ -8,6 +8,7 @@ import { Truck } from "$lib/vehicles/Truck"
 import { Car } from "$lib/vehicles/Car"
 import { coroutine } from "merlyn"
 import { CityBackground } from "$lib/CityBackground"
+import { Sky } from "$lib/Sky"
 
 export default class Main extends ex.Scene {
   player!: Player
@@ -18,8 +19,10 @@ export default class Main extends ex.Scene {
   vehicleTimer = 0
 
   onInitialize() {
+    const sky = new Sky()
     const bg = new CityBackground()
     const ground = new Ground()
+    engine.add(sky)
     engine.add(bg)
     engine.add(ground)
 

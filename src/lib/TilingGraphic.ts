@@ -2,13 +2,17 @@ import { getBaseY, getSafeArea } from "./util"
 import { WindowResizeComponent } from "./WindowResizeComponent"
 import type { Routes } from "$game"
 
-export interface InfiniteScrollGraphicArgs extends ex.ActorArgs {
+export interface TilingGraphicArgs extends ex.ActorArgs {
   graphic: ex.Graphic
   speed?: number
   repeatY?: number
 }
 
-export class InfiniteScrollGraphic extends ex.Actor {
+/**
+ * Tiles graphic across the screen. Scrolls horizontally at the
+ * given speed, can also repeat vertically.
+ */
+export class TilingGraphic extends ex.Actor {
   declare scene: Routes["index"]
 
   graphic: ex.Graphic
@@ -17,12 +21,7 @@ export class InfiniteScrollGraphic extends ex.Actor {
   speed: number
   repeatY: number
 
-  constructor({
-    graphic,
-    speed = 0,
-    repeatY = 1,
-    ...args
-  }: InfiniteScrollGraphicArgs) {
+  constructor({ graphic, speed = 0, repeatY = 1, ...args }: TilingGraphicArgs) {
     super({
       anchor: new ex.Vector(0, 0),
       x: 0,

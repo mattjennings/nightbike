@@ -1,14 +1,13 @@
 import { getBaseY, pxScale, pxScaleVec } from "./util"
-import { WindowResizeComponent } from "./WindowResizeComponent"
 import type { Routes } from "$game"
-import { InfiniteScrollGraphic } from "./InfiniteScrollGraphic"
+import { TilingGraphic } from "./TilingGraphic"
 
 const top = $res("sprites/levels/ground/street-top.png").toSprite()
 const fill = $res("sprites/levels/ground/street-fill.png").toSprite()
-export class Ground extends InfiniteScrollGraphic {
+export class Ground extends TilingGraphic {
   declare scene: Routes["index"]
 
-  fill: InfiniteScrollGraphic | undefined
+  fill: TilingGraphic | undefined
 
   constructor() {
     super({
@@ -41,7 +40,7 @@ export class Ground extends InfiniteScrollGraphic {
       this.fill.kill()
     }
 
-    this.fill = new InfiniteScrollGraphic({
+    this.fill = new TilingGraphic({
       graphic: fill,
       speed: this.speed,
       scale: this.scale,
