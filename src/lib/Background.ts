@@ -1,7 +1,10 @@
-import { pxScale, pxScaleVec } from "./util"
+import type { Level } from "./Level"
+import { getBaseY } from "./util"
 import { WindowResizeComponent } from "./WindowResizeComponent"
 
 export class Background extends ex.Actor {
+  declare scene: Level
+
   graphic: ex.Graphic
   speed!: number
   offset = ex.Vector.Zero
@@ -14,6 +17,7 @@ export class Background extends ex.Actor {
   }) {
     super({
       anchor: new ex.Vector(0, 0),
+      x: 0,
       ...args,
     })
     this.addComponent(new WindowResizeComponent())
@@ -22,6 +26,8 @@ export class Background extends ex.Actor {
   }
 
   onInitialize() {
+    this.pos.y = getBaseY() - 256
+
     this.speed = -this.scene.speed / 6000
     this.onWindowResize()
   }

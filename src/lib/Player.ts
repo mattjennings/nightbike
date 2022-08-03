@@ -1,4 +1,6 @@
-import { getSafeArea, pxScale, pxScaleVec } from "./util"
+import { Explosion } from "./Explosion"
+import { getBaseY, getSafeArea, pxScale, pxScaleVec } from "./util"
+import { Vehicle } from "./vehicles"
 
 const head = ex.SpriteSheet.fromImageSource({
   image: $res("sprites/player/head.png"),
@@ -21,12 +23,17 @@ const wheels = ex.SpriteSheet.fromImageSource({
 const bike = $res("sprites/player/bike.png").toSprite()
 const body = $res("sprites/player/body.png").toSprite()
 
+const sndJump = $res("sound/jump.mp3")
+sndJump.volume = 0.5
+
 export class Player extends ex.Actor {
   frame = 0
   animSpeed = 0.2
 
   coyoteTime = 0
-  onGround = false
+
+  isOnGround = false
+  isEntering = true
 
   constructor() {
     super({
@@ -41,6 +48,7 @@ export class Player extends ex.Actor {
   onInitialize() {
     this.on("collisionstart", this.onCollisionStart)
     this.on("postcollision", this.onPostCollision)
+    this.respawn()
   }
 
   onCollisionStart = (evt: ex.CollisionStartEvent) => {
@@ -48,23 +56,43 @@ export class Player extends ex.Actor {
       this.die()
     }
   }
+
+  respawn() {
+    if (!this.scene.contains(this)) {
+      this.scene.engine.add(this)
+    }
+    this.pos.x = getSafeArea().left - pxScale(8)
+    this.pos.y = getBaseY() - pxScale(7)
+
+    this.graphics.opacity = 0
+    this.actions.fade(1, 150)
+  }
+
   onPostCollision = (evt: ex.PostCollisionEvent) => {
     if (evt.side === ex.Side.Bottom) {
-      this.onGround = true
+      this.isOnGround = true
       if (this.coyoteTime > 0) {
         this.jump()
         this.coyoteTime = 0
       }
     }
 
-    if (evt.side === ex.Side.Left || evt.side === ex.Side.Right) {
-      this.die()
+    if (evt.other instanceof Vehicle) {
+      if (evt.side === ex.Side.Left || evt.side === ex.Side.Right) {
+        this.die()
+      }
     }
   }
 
   onPreUpdate(engine: ex.Engine, delta: number) {
-    this.vel.x = 0
-    this.pos.x = getSafeArea().left + pxScale(16)
+    if (this.pos.x < getSafeArea().left + pxScale(16)) {
+      this.isEntering = true
+      this.vel.x = 150
+    } else {
+      this.isEntering = false
+      this.vel.x = 0
+      this.pos.x = getSafeArea().left + pxScale(16)
+    }
 
     // increment animation frame
     this.frame = (this.frame + this.animSpeed) % 4
@@ -88,18 +116,24 @@ export class Player extends ex.Actor {
   }
 
   die() {
-    this.vel = ex.vec(0, 0)
-    this.coyoteTime = 0
-    this.graphics.opacity = 0.5
-    setTimeout(() => {
-      this.graphics.opacity = 1
-    }, 500)
+    if (!this.isKilled()) {
+      this.vel = ex.vec(0, 0)
+      this.coyoteTime = 0
+      this.scene.engine.add(
+        new Explosion({
+          pos: this.pos,
+        })
+      )
+      this.emit("died", undefined)
+      this.kill()
+    }
   }
 
   jump() {
-    if (this.onGround) {
+    if (this.isOnGround && !this.isEntering && !this.isKilled()) {
+      sndJump.play()
       this.vel.y = -13 * 60
-      this.onGround = false
+      this.isOnGround = false
     }
   }
 
