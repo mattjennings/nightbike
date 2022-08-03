@@ -42,7 +42,7 @@ export class Vehicle extends ex.Actor {
 
   onPreUpdate(engine: ex.Engine, delta: number) {
     this.scene.isTransitioning
-    this.vel.x = -Math.round(this.scene.speed * 0.75)
+    this.vel.x = -Math.round(this.scene.speed * 0.65)
 
     if (
       this.pos.x + this.width <

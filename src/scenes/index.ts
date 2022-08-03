@@ -75,14 +75,14 @@ export default class Main extends ex.Scene {
           if (choose([true, false, false])) {
             this.nextVehicle = choose([Car, Truck])
             if (this.nextVehicle === Car) {
-              this.vehicleTimer = 300
+              this.vehicleTimer = 350
             } else {
-              this.vehicleTimer = 450
+              this.vehicleTimer = 500
             }
           }
         } else if (vehicle instanceof Truck) {
           if (choose([true, false, false, false])) {
-            this.vehicleTimer = 500
+            this.vehicleTimer = 550
             this.nextVehicle = Truck
           }
         }
