@@ -11,35 +11,25 @@ import { coroutine } from "merlyn"
 
 export default class Main extends ex.Scene {
   player!: Player
-  bg!: Background
-  ground!: Ground
   music = $res("music/city.mp3")
   speed = 550
 
   nextVehicle?: typeof Vehicle | undefined
   vehicleTimer = 0
 
-  constructor() {
-    super()
-    this.bg = new Background({
+  onInitialize() {
+    const bg = new Background({
       graphic: $res("sprites/levels/bg/city.png").toSprite(),
     })
-    this.ground = new Ground({
+    const ground = new Ground({
       top: $res("sprites/levels/ground/street-top.png").toSprite(),
       fill: $res("sprites/levels/ground/street-fill.png").toSprite(),
     })
-  }
-  onInitialize() {
-    engine.add(this.bg)
-    engine.add(this.ground)
-
-    this.music.play()
+    engine.add(bg)
+    engine.add(ground)
 
     this.music.loop = true
-    // sometimes it doesn't actually loop, this seems to help
-    this.music.on("playbackend", () => {
-      this.music.play()
-    })
+    this.music.play()
     this.spawnPlayer()
   }
 
@@ -72,6 +62,10 @@ export default class Main extends ex.Scene {
   }
 
   onPreUpdate(engine: ex.Engine, delta: number) {
+    // sometimes it doesn't actually loop, this seems to help
+    if (!this.music.isPlaying) {
+      this.music.play()
+    }
     if (!this.player.isKilled()) {
       if (this.vehicleTimer <= 0) {
         const vehicle = this.spawnVehicle(this.nextVehicle)
