@@ -1,20 +1,109 @@
-import "excalibur"
-
-import { Level } from "$lib/Level"
-import { Background } from "$lib/Background"
+import { engine } from "$game"
 import { Ground } from "$lib/Ground"
+import { Player } from "$lib/Player"
+import { Background } from "$lib/Background"
+import { choose, getBaseY, getSafeArea, pxScale } from "$lib/util"
+import { Vehicle, vehicles } from "$lib/vehicles"
+import { Bus } from "$lib/vehicles/Bus"
+import { Truck } from "$lib/vehicles/Truck"
+import { Car } from "$lib/vehicles/Car"
+import { coroutine } from "merlyn"
 
-export default class Main extends Level {
+export default class Main extends ex.Scene {
+  player!: Player
+  bg!: Background
+  ground!: Ground
+  music = $res("music/city.mp3")
+  speed = 550
+
+  nextVehicle?: typeof Vehicle | undefined
+  vehicleTimer = 0
+
   constructor() {
-    super({
-      music: $res("music/city.mp3"),
-      bg: new Background({
-        graphic: $res("sprites/levels/bg/city.png").toSprite(),
-      }),
-      ground: new Ground({
-        top: $res("sprites/levels/ground/street-top.png").toSprite(),
-        fill: $res("sprites/levels/ground/street-fill.png").toSprite(),
-      }),
+    super()
+    this.bg = new Background({
+      graphic: $res("sprites/levels/bg/city.png").toSprite(),
     })
+    this.ground = new Ground({
+      top: $res("sprites/levels/ground/street-top.png").toSprite(),
+      fill: $res("sprites/levels/ground/street-fill.png").toSprite(),
+    })
+  }
+  onInitialize() {
+    engine.add(this.bg)
+    engine.add(this.ground)
+
+    this.music.play()
+
+    this.music.loop = true
+    // sometimes it doesn't actually loop, this seems to help
+    this.music.on("playbackend", () => {
+      this.music.play()
+    })
+    this.spawnPlayer()
+  }
+
+  spawnPlayer() {
+    if (!this.player) {
+      this.player = new Player()
+      engine.add(this.player)
+    } else {
+      this.player.respawn()
+    }
+
+    this.player.on("died", async () => {
+      coroutine(function* () {
+        while (this.countActiveVehicles() > 0) {
+          yield
+        }
+
+        this.player.respawn()
+      }, this)
+    })
+  }
+
+  countActiveVehicles() {
+    return this.entities.filter((e) => {
+      let isActive = (e: Vehicle) =>
+        e.pos.x + e.width > getSafeArea().left - pxScale(16)
+
+      return e instanceof Vehicle && isActive(e)
+    }).length
+  }
+
+  onPreUpdate(engine: ex.Engine, delta: number) {
+    if (!this.player.isKilled()) {
+      if (this.vehicleTimer <= 0) {
+        const vehicle = this.spawnVehicle(this.nextVehicle)
+        this.nextVehicle = undefined
+        this.vehicleTimer = 1000
+
+        if (vehicle instanceof Car) {
+          this.vehicleTimer = 800
+        } else if (vehicle instanceof Bus) {
+          if (choose([true, false, false])) {
+            this.nextVehicle = choose([Car, Truck])
+            if (this.nextVehicle === Car) {
+              this.vehicleTimer = 300
+            } else {
+              this.vehicleTimer = 450
+            }
+          }
+        } else if (vehicle instanceof Truck) {
+          if (choose([true, false, false, false])) {
+            this.vehicleTimer = 500
+            this.nextVehicle = Truck
+          }
+        }
+      } else {
+        this.vehicleTimer -= delta
+      }
+    }
+  }
+
+  spawnVehicle(vehicle = choose(vehicles)): Vehicle {
+    const instance = new vehicle({} as any)
+    engine.add(instance)
+    return instance
   }
 }

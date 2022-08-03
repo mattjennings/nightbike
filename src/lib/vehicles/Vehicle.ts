@@ -1,4 +1,4 @@
-import type { Level } from "$lib/Level"
+import type { Routes } from "$game"
 import { getBaseY, getSafeArea, pxScale, pxScaleVec } from "$lib/util"
 
 export interface VehicleArgs extends ex.ActorArgs {
@@ -6,7 +6,7 @@ export interface VehicleArgs extends ex.ActorArgs {
 }
 
 export class Vehicle extends ex.Actor {
-  declare scene: Level
+  declare scene: Routes["index"]
   spritesheet: ex.SpriteSheet
 
   constructor({ spritesheet, ...args }: VehicleArgs) {

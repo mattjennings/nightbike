@@ -1,9 +1,9 @@
-import type { Level } from "./Level"
 import { getBaseY, pxScale, pxScaleVec } from "./util"
 import { WindowResizeComponent } from "./WindowResizeComponent"
+import type { Routes } from "$game"
 
 export class Ground extends ex.Actor {
-  declare scene: Level
+  declare scene: Routes["index"]
   top!: ex.Sprite
   fill!: ex.Sprite
   offsetX = 0

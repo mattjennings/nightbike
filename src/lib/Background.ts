@@ -1,9 +1,9 @@
-import type { Level } from "./Level"
 import { getBaseY } from "./util"
 import { WindowResizeComponent } from "./WindowResizeComponent"
+import type { Routes } from "$game"
 
 export class Background extends ex.Actor {
-  declare scene: Level
+  declare scene: Routes["index"]
 
   graphic: ex.Graphic
   speed!: number
