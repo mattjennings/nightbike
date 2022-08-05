@@ -1,3 +1,4 @@
+import { engine, type Routes } from "$game"
 import { Explosion } from "./Explosion"
 import { getBaseY, getSafeArea, pxScale, pxScaleVec } from "./util"
 import { Vehicle } from "./vehicles"
@@ -27,6 +28,8 @@ const sndJump = $res("sound/jump.mp3")
 sndJump.volume = 0.5
 
 export class Player extends ex.Actor {
+  declare scene: Routes["index"]
+
   frame = 0
   animSpeed = 0.2
 
@@ -49,6 +52,15 @@ export class Player extends ex.Actor {
     this.on("collisionstart", this.onCollisionStart)
     this.on("postcollision", this.onPostCollision)
     this.respawn()
+
+    engine.input.pointers.on("down", () => {
+      if (this.scene.state.playing) {
+        this.coyoteTime = 150
+        this.jump()
+      } else if (!this.scene.state.dead) {
+        this.emit("start", undefined)
+      }
+    })
   }
 
   onCollisionStart = (evt: ex.CollisionStartEvent) => {
@@ -99,12 +111,6 @@ export class Player extends ex.Actor {
 
     this.coyoteTime = Math.max(0, this.coyoteTime - delta)
 
-    engine.input.pointers.on("down", () => {
-      this.coyoteTime = 150
-
-      this.jump()
-    })
-
     const yVel = this.vel.y
     if (yVel > -60 && yVel < 0 && yVel !== 0) {
       this.vel.y -= 2.25 * delta
@@ -129,6 +135,7 @@ export class Player extends ex.Actor {
         })
       )
       this.emit("died", undefined)
+      this.scene.emit("playerdied", undefined)
       this.kill()
     }
   }

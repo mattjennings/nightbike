@@ -11,7 +11,10 @@
     "prepare": "merlyn sync"
   },
   "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "prettier": "^2.7.1",
+    "svelte": "^3.49.0",
+    "svelte-preprocess": "^4.10.7",
     "typescript": "^4.7.4",
     "vite": "latest",
     "vite-plugin-compress": "^2.1.1"

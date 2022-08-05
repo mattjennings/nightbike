@@ -1,4 +1,5 @@
 import type { Routes } from "$game"
+import { engine } from "$game"
 import { getBaseY, getSafeArea, pxScale, pxScaleVec } from "$lib/util"
 
 export interface VehicleArgs extends ex.ActorArgs {
@@ -8,6 +9,8 @@ export interface VehicleArgs extends ex.ActorArgs {
 export class Vehicle extends ex.Actor {
   declare scene: Routes["index"]
   spritesheet: ex.SpriteSheet
+
+  jumped = false
 
   constructor({ spritesheet, ...args }: VehicleArgs) {
     super({
@@ -38,11 +41,24 @@ export class Vehicle extends ex.Actor {
 
     this.graphics.opacity = 0
     this.actions.fade(1, 100)
+
+    // prevent vehicle from counting score if it's still on screen
+    // when player respawns
+    this.scene.on("playerdied", () => {
+      this.jumped = true
+    })
   }
 
   onPreUpdate(engine: ex.Engine, delta: number) {
     this.scene.isTransitioning
     this.vel.x = -Math.round(this.scene.speed * 0.65)
+
+    if (!this.jumped && !this.scene.player.isKilled()) {
+      if (this.pos.x + this.width < this.scene.player.pos.x) {
+        this.jumped = true
+        this.scene.emit("score", undefined)
+      }
+    }
 
     if (
       this.pos.x + this.width <
