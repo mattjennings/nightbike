@@ -1,5 +1,5 @@
 {
-  "name": "merlyn-typescript",
+  "name": "nightbike",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,7 +17,8 @@
     "svelte-preprocess": "^4.10.7",
     "typescript": "^4.7.4",
     "vite": "latest",
-    "vite-plugin-compress": "^2.1.1"
+    "vite-plugin-compress": "^2.1.1",
+    "vite-plugin-pwa": "^0.12.3"
   },
   "dependencies": {
     "excalibur": "^0.27.0",
