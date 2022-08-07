@@ -42,9 +42,6 @@
   }
 
   .root {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     height: 100%;
     font-family: Pixel;
     pointer-events: none;
@@ -73,9 +70,34 @@
   }
 
   .tap-to-start {
+    position: absolute;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: calc(16 * var(--px));
+    top: 80%;
+
+    animation: blink 1.75s infinite ease-in-out;
+  }
+
+  @media (min-width: 768px) {
+    .tap-to-start {
+      top: 85%;
+    }
+  }
+
+  @keyframes blink {
+    50%,
+    100% {
+      opacity: 1;
+    }
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
 </style>
