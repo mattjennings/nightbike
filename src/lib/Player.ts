@@ -54,7 +54,6 @@ export class Player extends ex.Actor {
     this.respawn()
 
     const handleJumpInput = () => {
-      console.log("asdf")
       if (this.scene.state.playing) {
         this.coyoteTime = 150
         this.jump()

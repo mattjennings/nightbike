@@ -21,7 +21,7 @@
 
 <div class="root">
   <div class="scores">
-    <span class="highscore">HIGHSCORE: {highscore}</span>
+    <span class="highscore">HIGHSCORE {highscore}</span>
 
     {#if score > 0}
       <span class="score">{score}</span>
