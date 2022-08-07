@@ -53,13 +53,19 @@ export class Player extends ex.Actor {
     this.on("postcollision", this.onPostCollision)
     this.respawn()
 
-    engine.input.pointers.on("down", () => {
+    const handleJumpInput = () => {
+      console.log("asdf")
       if (this.scene.state.playing) {
         this.coyoteTime = 150
         this.jump()
       } else if (!this.scene.state.dead) {
         this.emit("start", undefined)
       }
+    }
+
+    engine.input.pointers.on("down", () => handleJumpInput())
+    engine.input.keyboard.on("press", (ev) => {
+      handleJumpInput()
     })
   }
 
