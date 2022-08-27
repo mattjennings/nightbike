@@ -21,7 +21,7 @@
 
 <div class="root">
   <div class="scores">
-    <span class="highscore">HIGHSCORE {highscore}</span>
+    <span class="highscore" class:playing>HIGHSCORE {highscore}</span>
 
     {#if score > 0}
       <span class="score">{score}</span>
@@ -67,6 +67,10 @@
 
   .score {
     font-size: 1.5em;
+  }
+
+  .highscore.playing {
+    visibility: hidden;
   }
 
   .tap-to-start {
