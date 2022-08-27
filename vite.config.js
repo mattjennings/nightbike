@@ -16,7 +16,7 @@ export default defineConfig({
     }),
     compress.default({
       verbose: true,
-      exclude: ["**/*.js"],
+      exclude: ["**/*.js", "og-image.png", "index.html"],
     }),
     VitePWA({
       registerType: "autoUpdate",
