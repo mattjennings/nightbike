@@ -51,7 +51,6 @@ export class Player extends ex.Actor {
   onInitialize() {
     this.on("collisionstart", this.onCollisionStart)
     this.on("postcollision", this.onPostCollision)
-    this.respawn()
 
     const handleJumpInput = () => {
       if (this.scene.state.playing) {
@@ -72,17 +71,6 @@ export class Player extends ex.Actor {
     if (evt.other.name === "Vehicle") {
       this.die()
     }
-  }
-
-  respawn() {
-    if (!this.scene.contains(this)) {
-      this.scene.engine.add(this)
-    }
-    this.pos.x = getSafeArea().left - pxScale(8)
-    this.pos.y = getBaseY() - pxScale(7)
-
-    this.graphics.opacity = 0
-    this.actions.fade(1, 150)
   }
 
   onPostCollision = (evt: ex.PostCollisionEvent) => {

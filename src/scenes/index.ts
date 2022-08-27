@@ -1,6 +1,5 @@
 import { engine } from "$game"
 import { Ground } from "$lib/Ground"
-import { Player } from "$lib/Player"
 import { choose, getBaseY, getSafeArea, pxScale } from "$lib/util"
 import { Vehicle, vehicles } from "$lib/vehicles"
 import { Bus } from "$lib/vehicles/Bus"
@@ -11,9 +10,12 @@ import { CityBackground } from "$lib/CityBackground"
 import { Sky } from "$lib/Sky"
 import { SvelteUI } from "$lib/ui/SvelteUI"
 import UI from "$lib/ui/UI.svelte"
+import { PlayerSpawner } from "$lib/PlayerSpawner"
+import type { Player } from "$lib/Player"
 
 export default class Main extends ex.Scene {
   player!: Player
+  playerSpawner!: PlayerSpawner
   music = $res("music/city.mp3")
   speed = 550
 
@@ -31,14 +33,14 @@ export default class Main extends ex.Scene {
 
   onInitialize() {
     this.ui = new SvelteUI(UI)
-    this.player = new Player()
+    this.playerSpawner = new PlayerSpawner()
 
     const sky = new Sky()
     const bg = new CityBackground()
     const ground = new Ground()
 
+    engine.add(this.playerSpawner)
     engine.add(this.ui)
-    engine.add(this.player)
     engine.add(sky)
     engine.add(bg)
     engine.add(ground)
@@ -46,8 +48,8 @@ export default class Main extends ex.Scene {
     this.music.play()
 
     this.on("score", () => this.onScore())
-    this.player.on("start", () => this.onStart())
-    this.player.on("died", () => this.onPlayerDied())
+    this.playerSpawner.on("start", () => this.onStart())
+    this.playerSpawner.on("died", () => this.onPlayerDied())
   }
 
   countActiveVehicles() {
@@ -125,7 +127,7 @@ export default class Main extends ex.Scene {
         yield
       }
 
-      this.player.respawn()
+      this.playerSpawner.respawn()
       this.state.dead = false
     }, this)
   }
